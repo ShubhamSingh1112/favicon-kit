@@ -93,7 +93,21 @@ const files = [
 
       <section class="faq-strip" id="faq"><span><b>Made for the small details that make a site feel finished.</b><small>Free, private, and ready when you are.</small></span><span>Questions? <a href="mailto:hello@un-lovable.com">Get in touch <ArrowRight size={13} /></a></span></section>
     </main>
-    <footer class="footer page-width"><a class="brand footer-brand" href="#home"><img class="brand-logo" src="/FaviconKit-logo-black.svg" alt="" /><span>favicon<span class="brand-light">kit</span></span></a><span>Small icons. Big impact.</span><nav><a href="#features">Privacy</a><a href="#faq">Terms</a><a href="mailto:hello@un-lovable.com">Contact</a></nav><span class="made-heart">♥ <span>Made for creators</span></span></footer>
+    <footer class="footer page-width">
+      <div class="footer-main">
+        <a class="brand footer-brand" href="#home"><img class="brand-logo" src="/FaviconKit-logo-black.svg" alt="" /><span>favicon<span class="brand-light">kit</span></span></a>
+        <span>Small icons. Big impact.</span>
+        <nav aria-label="Footer navigation"><a href="#features">Privacy</a><a href="#faq">Terms</a><a href="mailto:hello@un-lovable.com">Contact</a></nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© {new Date().getFullYear()} Shubham Singh. All rights reserved.</span>
+        <nav class="social-links" aria-label="Social links">
+          <a href="https://github.com/ShubhamSingh1112" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/11shubhamsingh22/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.instagram.com/shubham_singh_0292/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </nav>
+      </div>
+    </footer>
     <script>import "../main";</script>
   </body>
 </html>
