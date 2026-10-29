@@ -1,0 +1,99 @@
+---
+import "../style.css";
+import { ArrowDown, ArrowRight, ChevronDown, ChevronRight, CircleHelp, Code2, Copy, Download, FileCode2, FileJson, FileText, Image, ImagePlus, Layers3, LockKeyhole, Moon, Palette, Smartphone, Sparkles, WandSparkles, Zap } from "lucide-astro";
+const files = [
+  { name: "favicon.ico", detail: "16, 32 & 48 px · browser tabs", icon: Image, kind: "image", action: "favicon.ico" },
+  { name: "favicon-16x16.png", detail: "16 × 16 · compact tabs", icon: Image, kind: "image", action: "favicon-16x16.png" },
+  { name: "favicon-32x32.png", detail: "32 × 32 · standard tabs", icon: Image, kind: "image", action: "favicon-32x32.png" },
+  { name: "apple-touch-icon.png", detail: "180 × 180 · iPhone & iPad", icon: Smartphone, kind: "image", action: "apple-touch-icon.png" },
+  { name: "icon-192.png", detail: "192 × 192 · Android", icon: Smartphone, kind: "image", action: "icon-192.png" },
+  { name: "icon-512.png", detail: "512 × 512 · PWA install", icon: Image, kind: "image", action: "icon-512.png" },
+  { name: "icon-512-maskable.png", detail: "512 × 512 · adaptive safe area", icon: Image, kind: "image", action: "icon-512-maskable.png" },
+  { name: "site.webmanifest", detail: "App name, colours & install settings", icon: FileJson, kind: "code", action: "site.webmanifest" },
+  { name: "head-snippet.html", detail: "Link tags for your page", icon: FileCode2, kind: "code", action: "head-snippet.html" },
+  { name: "framework-setup.txt", detail: "Selected React, Next.js or Astro setup", icon: Code2, kind: "code", action: "framework-setup.txt" },
+  { name: "README.txt", detail: "Quick setup instructions", icon: FileText, kind: "code", action: "README.txt" },
+];
+---
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f8fc" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; form-action 'self';" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <title>Favicon Kit — Every icon your site needs</title>
+    <meta name="description" content="Create a complete favicon and app icon kit in your browser. Your images stay on your device." />
+  </head>
+  <body>
+    <header class="topbar page-width">
+      <a class="brand" href="#home" aria-label="Favicon Kit home"><img class="brand-logo" src="/FaviconKit-logo-black.svg" alt="" /><span>favicon<span class="brand-light">kit</span></span></a>
+      <nav class="main-nav" aria-label="Main navigation"><a class="active" href="#home">Home</a><a href="#features">Features</a><a href="#examples">Preview</a><a href="#faq">FAQ</a></nav>
+      <div class="top-actions"><span class="privacy"><i></i> Files stay on your device</span><button id="themeToggle" class="theme-toggle" type="button"><span class="theme-icon"><Moon size={15} /></span><span class="theme-label">Dark mode</span></button></div>
+      <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation" type="button" aria-expanded="false"><ChevronDown size={18} /></button>
+    </header>
+
+    <main id="home" class="page-width">
+      <section class="hero">
+        <div class="hero-copy"><p class="eyebrow"><span class="eyebrow-mark"><Sparkles size={13} /></span> A complete icon set, in seconds</p><h1>One image.<br /><span>Every icon</span> your site needs.</h1><p class="lede">Create favicons, app icons, a web manifest, and a ready-to-paste setup snippet. Nothing is uploaded.</p>
+          <div class="feature-pills"><div><span class="pill-icon blue"><Image size={16} /></span><span><b>Favicon</b><small>16×16 — 64×64</small></span></div><div><span class="pill-icon indigo"><Smartphone size={16} /></span><span><b>App icons</b><small>iOS + Android</small></span></div><div><span class="pill-icon violet"><FileJson size={16} /></span><span><b>Web manifest</b><small>PWA ready</small></span></div><div><span class="pill-icon teal"><Code2 size={16} /></span><span><b>Setup snippet</b><small>Copy & paste</small></span></div></div>
+        </div>
+        <div class="hero-art" aria-label="One image becomes every icon size"><div class="art-glow"></div><div class="art-note">From one image<br />to all your icons <ArrowDown size={25} /></div><div class="art-icon main-art-icon">fk</div><div class="art-icon tile t1">fk</div><div class="art-icon tile t2">fk</div><div class="art-icon tile t3">fk</div><div class="art-icon tile t4">fk</div><div class="art-icon tile t5">fk</div><div class="art-icon tile t6">fk</div><div class="art-icon tile t7">fk</div><div class="art-icon tile t8">fk</div></div>
+      </section>
+
+      <div class="steps" aria-label="Three steps"><div class="step-item is-current" data-step="1"><span class="step-number">1</span><span><b>Upload image</b><small>Choose your logo</small></span></div><div class="step-item" data-step="2"><span class="step-number">2</span><span><b>Customize</b><small>Set name and colours</small></span></div><div class="step-item" data-step="3"><span class="step-number">3</span><span><b>Download</b><small>Get your ready-to-use ZIP</small></span></div></div>
+
+      <section class="builder-layout" id="features">
+        <aside class="why-card"><h2>Why Favicon Kit?</h2><div class="benefit"><span class="benefit-icon green"><Layers3 size={18} /></span><span><b>All-in-one package</b><small>Favicons, app icons, manifest and setup snippet.</small></span></div><div class="benefit"><span class="benefit-icon blue"><LockKeyhole size={18} /></span><span><b>Privacy first</b><small>Your files stay on your device. Nothing is uploaded.</small></span></div><div class="benefit"><span class="benefit-icon orange"><WandSparkles size={18} /></span><span><b>Super simple</b><small>Three steps. No technical knowledge needed.</small></span></div><div class="benefit"><span class="benefit-icon purple"><Zap size={18} /></span><span><b>PWA ready</b><small>Works across modern devices and platforms.</small></span></div><p class="handwritten">Professional assets.<br />In seconds.</p></aside>
+
+        <section class="builder panel" aria-label="Favicon builder">
+          <div class="builder-head"><div><h2>Your source image</h2><p>Use a square image for the sharpest results.</p></div><span class="recommended"><CircleHelp size={13} /> Recommended: 512 × 512px</span></div>
+          <div class="upload-area" id="dropZone"><input type="file" id="fileInput" accept="image/png,image/jpeg,image/svg+xml,image/webp" hidden /><div class="upload-icon"><ImagePlus size={23} /></div><p class="upload-title">Drag and drop your image here</p><span class="upload-or">or</span><button id="pickBtn" class="btn choose-button" type="button">Choose an image</button><span class="format-hint">PNG, JPG, SVG or WebP <i>·</i> up to 10 MB</span><div class="source-meta" id="sourceMeta" hidden><span class="file-badge">IMG</span><div><strong id="sourceName"></strong><span id="sourceDimensions"></span></div><button id="changeImage" class="text-button" type="button">Change</button></div></div>
+
+          <div class="editor-grid">
+            <section class="editor-card" id="settings"><div class="card-heading"><span class="card-icon"><Palette size={17} /></span><span><h3>Download options</h3><p>Customize your app name, colours and details.</p></span></div>
+              <label class="field">App name <span class="subtle">(required)</span><input type="text" id="appName" maxlength="60" placeholder="My App" required aria-describedby="appNameError" /><span class="field-error" id="appNameError" hidden></span></label>
+              <label class="field">Short name <span class="subtle">(optional)</span><input type="text" id="shortName" maxlength="12" placeholder="MyApp" /><span class="field-error" id="shortNameError" hidden></span></label>
+              <div class="field-pair"><label class="field">Theme colour<span class="color-field"><input type="color" id="themeColor" value="#2563eb" /><span id="themeHex">#2563eb</span></span></label><label class="field">Background colour<span class="color-field"><input type="color" id="bgColor" value="#ffffff" /><span id="bgHex">#ffffff</span></span></label></div>
+              <fieldset class="orientation-field"><legend>Icon orientation</legend><div class="segmented"><label><input type="radio" name="orientation" value="any" checked /><span>Any</span></label><label><input type="radio" name="orientation" value="portrait" /><span>Portrait</span></label><label><input type="radio" name="orientation" value="landscape" /><span>Landscape</span></label></div></fieldset>
+              <details class="advanced"><summary>Advanced options <ChevronRight size={14} /></summary><div class="advanced-fields"><label class="field">Crop zoom <output id="zoomValue">1×</output><input id="cropZoom" type="range" min="1" max="2.5" step="0.05" value="1" /></label><label class="field">Horizontal position <output id="cropXValue">Center</output><input id="cropX" type="range" min="-100" max="100" value="0" /></label><label class="field">Vertical position <output id="cropYValue">Center</output><input id="cropY" type="range" min="-100" max="100" value="0" /></label><label class="field">Start URL<input type="text" id="startUrl" value="/" maxlength="200" /></label><label class="field">Display mode<select id="displayMode"><option value="standalone">Standalone</option><option value="minimal-ui">Minimal UI</option><option value="fullscreen">Full screen</option><option value="browser">Browser</option></select></label><label class="field">Maskable safe area <output id="safeAreaValue">80%</output><input id="safeArea" type="range" min="70" max="90" value="80" /></label><label class="field">Setup snippet<select id="snippetFramework"><option value="html">HTML</option><option value="react">React</option><option value="next">Next.js</option><option value="astro">Astro</option></select></label></div></details>
+            </section>
+
+            <section class="editor-card preview-card" id="examples"><div class="card-heading"><span class="card-icon"><Smartphone size={17} /></span><span><h3>Live preview</h3><p>See how your icons will look across devices.</p></span><span class="live-pill"><i></i> Live</span></div>
+              <div class="preview-frame"><div class="preview-tabs" role="tablist"><button class="preview-tab active" data-preview="favicon" role="tab"><Image size={13} /> Favicon</button><button class="preview-tab" data-preview="apps" role="tab"><Smartphone size={13} /> App icons</button><button class="preview-tab" data-preview="manifest" role="tab"><FileJson size={13} /> Manifest</button></div>
+                <div class="preview-pane active" data-pane="favicon"><div class="size-gallery"><div class="large-preview"><div class="preview-icon preview-icon-lg" data-icon-size="512">fk</div><span>512×512<small>Regular app icon</small></span></div><div class="size-grid"><div class="size-sample"><div class="preview-icon" data-icon-size="192">fk</div><span>192×192</span></div><div class="size-sample"><div class="preview-icon" data-icon-size="180">fk</div><span>180×180</span></div><div class="size-sample"><div class="preview-icon small-preview" data-icon-size="48">fk</div><span>48×48</span></div><div class="size-sample"><div class="preview-icon tiny-preview" data-icon-size="32">fk</div><span>32×32</span></div><div class="size-sample"><div class="preview-icon micro-preview" data-icon-size="16">fk</div><span>16×16</span></div></div></div></div>
+                <div class="preview-pane apps-preview" data-pane="apps"><div class="phone-mock"><div class="phone-speaker"></div><div class="phone-wallpaper"><div class="preview-icon phone-icon" data-icon-size="192">fk</div><span id="phoneAppName">My App</span></div><div class="phone-dock"><span class="preview-icon phone-dock-icon" data-icon-size="48">fk</span><span class="preview-icon phone-dock-icon secondary-icon" data-icon-size="48">•</span><span class="preview-icon phone-dock-icon tertiary-icon" data-icon-size="48">•</span></div></div><div class="maskable-demo"><span>Maskable app icon</span><div class="maskable-icon" id="maskableIcon"><div class="maskable-inner">fk</div></div><small>Safe area preview</small></div></div>
+                <div class="preview-pane manifest-pane" data-pane="manifest"><div class="manifest-heading"><span class="file-type code-type">JSON</span><span>site.webmanifest</span><button id="copyManifest" type="button" class="mini-copy"><Copy size={12} /> Copy</button></div><pre class="manifest-code"><code id="manifestCode">{`{
+  "name": "My App",
+  "short_name": "MyApp",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "icons": [ ... ]
+}`}</code></pre></div>
+              </div>
+              <div class="device-card"><span class="device-label">Your app</span><div class="device-preview"><div class="site-icon" id="siteIcon">fk</div><div><strong id="siteTitle">My App</strong><span>Ready to install</span></div><ChevronRight size={16} /></div></div>
+            </section>
+          </div>
+
+          <div class="output-summary" id="actions"><div class="output-summary-icon"><Layers3 size={20} /></div><div class="output-summary-copy"><strong>Everything looks good?</strong><span>Your <b id="fileCount">11 files</b> are ready to be generated.</span></div><button id="generateBtn" class="btn primary" type="button"><Download size={16} /><span>Generate ZIP</span><ChevronRight size={15} /></button></div>
+          <p id="status" class="status" role="status" aria-live="polite">Add an image to get started.</p>
+
+          <details class="contents-panel"><summary><span><span class="card-icon"><Layers3 size={16} /></span><span><b>Inside your download</b><small>Preview files and save any asset individually</small></span><span class="contents-count">10 files</span></span><ChevronDown size={16} /></summary><div class="output-list">{files.map((file) => <div class="file-row"><span class:list={["file-type", file.kind === "code" ? "code-type" : "image-type"]}><file.icon size={14} /></span><span><strong>{file.name}</strong><small>{file.detail}</small></span><button class="individual-download" data-download={file.action} type="button" disabled aria-label={`Download ${file.name}`}><Download size={14} /></button></div>)}</div></details>
+          <section class="snippet-card"><div class="snippet-heading"><div><span class="card-icon"><Code2 size={16} /></span><span><strong>Setup snippet</strong><small>Paste inside your page’s &lt;head&gt;</small></span></div><button class="copy-button" id="copySnippet" type="button" disabled><Copy size={13} /> Copy</button></div><pre class="snippet"><code id="snippetCode">&lt;link rel="icon" href="/favicon.ico" sizes="any"&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"&gt;
+&lt;link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"&gt;
+&lt;link rel="manifest" href="/site.webmanifest"&gt;
+&lt;meta name="theme-color" content="#2563eb"&gt;</code></pre></section>
+        </section>
+      </section>
+
+      <section class="faq-strip" id="faq"><span><b>Made for the small details that make a site feel finished.</b><small>Free, private, and ready when you are.</small></span><span>Questions? <a href="mailto:hello@un-lovable.com">Get in touch <ArrowRight size={13} /></a></span></section>
+    </main>
+    <footer class="footer page-width"><a class="brand footer-brand" href="#home"><img class="brand-logo" src="/FaviconKit-logo-black.svg" alt="" /><span>favicon<span class="brand-light">kit</span></span></a><span>Small icons. Big impact.</span><nav><a href="#features">Privacy</a><a href="#faq">Terms</a><a href="mailto:hello@un-lovable.com">Contact</a></nav><span class="made-heart">♥ <span>Made for creators</span></span></footer>
+    <script>import "../main";</script>
+  </body>
+</html>

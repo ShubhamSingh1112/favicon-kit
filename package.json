@@ -1,0 +1,24 @@
+{
+  "name": "favicon-kit",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/astro.mjs dev",
+    "build": "node scripts/astro.mjs build && node scripts/types.mjs",
+    "preview": "node scripts/astro.mjs preview"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4",
+    "@types/pica": "^9.0.5",
+    "typescript": "~7.0.2",
+    "vite": "^8.3.5"
+  },
+  "dependencies": {
+    "astro": "^7.4.4",
+    "client-zip": "^2.5.1",
+    "icojs": "^1.0.1",
+    "lucide-astro": "^0.556.0",
+    "pica": "^10.0.3"
+  }
+}
