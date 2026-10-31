@@ -1,6 +1,7 @@
 import Pica from "pica";
 import { downloadZip } from "client-zip";
 import { encodeIco } from "icojs";
+import { outputFiles, type OutputFileName } from "./data/output-files";
 
 /* ------------------------------------------------------------------ */
 /*  DOM references                                                     */
@@ -46,7 +47,8 @@ const manifestCode = document.getElementById("manifestCode") as HTMLElement;
 const phoneAppName = document.getElementById("phoneAppName") as HTMLElement;
 const maskableIcon = document.getElementById("maskableIcon") as HTMLElement;
 const copyManifest = document.getElementById("copyManifest") as HTMLButtonElement;
-document.querySelector<HTMLElement>(".contents-count")!.textContent = "11 files";
+const outputFileCount = `${outputFiles.length} files`;
+document.querySelector<HTMLElement>(".contents-count")!.textContent = outputFileCount;
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -70,7 +72,7 @@ let sourceDimensionsText = "";
 let validationAttempted = false;
 let sourceBitmap: ImageBitmap | null = null;
 let previewUrls: string[] = [];
-let generatedFiles: { name: string; input: Blob | string }[] = [];
+let generatedFiles: { name: OutputFileName; input: Blob | string }[] = [];
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -90,7 +92,7 @@ function updateThemeControl() {
   themeIcon.textContent = isDark ? "☀" : "☾";
   themeLabel.textContent = `${isDark ? "Light" : "Dark"} mode`;
   brandLogo.src = isDark ? "/FaviconKit-logo.svg" : "/FaviconKit-logo-black.svg";
-  themeColorMeta?.setAttribute("content", isDark ? "#0b1020" : "#f6f7f9");
+  themeColorMeta?.setAttribute("content", isDark ? "#0b1020" : "#f3f6ff");
 }
 
 function setCurrentStep(currentStep: number) {
@@ -118,9 +120,12 @@ themeToggle.addEventListener("click", () => {
   updateThemeControl();
 });
 try {
-  document.documentElement.dataset.theme = localStorage.getItem("favicon-kit-theme") === "dark" ? "dark" : "light";
+  const savedTheme = localStorage.getItem("favicon-kit-theme");
+  if (savedTheme === "dark" || savedTheme === "light") {
+    document.documentElement.dataset.theme = savedTheme;
+  }
 } catch {
-  document.documentElement.dataset.theme = "light";
+  console.warn("Theme preference could not be read; using the system preference.");
 }
 updateThemeControl();
 
@@ -388,8 +393,8 @@ function updateDetailsPreview() {
   document.getElementById("bgHex")!.textContent = bgColorInput.value;
   snippetCode.textContent = generateSetupSnippet();
   manifestCode.textContent = generateManifest();
-  document.getElementById("fileCount")!.textContent = "11 files";
-  document.querySelector<HTMLElement>(".contents-count")!.textContent = "11 files";
+  document.getElementById("fileCount")!.textContent = outputFileCount;
+  document.querySelector<HTMLElement>(".contents-count")!.textContent = outputFileCount;
 }
 
 async function refreshPreview() {
@@ -455,7 +460,7 @@ function generateHtmlSnippet(): string {
 
   return [
     "<!-- Add these links inside your page's <head> -->",
-    '<link rel="icon" href="/favicon.ico" sizes="any">',
+    '<link rel="icon" type="image/x-icon" href="/favicon.ico">',
     '<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">',
     '<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">',
     '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">',
@@ -495,7 +500,9 @@ function generateReadme(): string {
     "  head-snippet.html       – copy-paste into your <head>",
     "  framework-setup.txt    – setup snippet for your selected framework",
     "",
-    "Place all files at the root of your site (or adjust paths in the snippet).",
+    "Place the generated files in your site's public root.",
+    "Then paste head-snippet.html inside the <head> of your page.",
+    "If the old icon remains, open a private window or clear the browser's favicon cache.",
     "",
     "— Generated with the Asset-to-Favicon & Manifest Generator",
   ].join("\n");
@@ -563,19 +570,30 @@ async function generateAndDownload() {
     const readme = generateReadme();
 
     // 4. Bundle with client-zip (streaming, no JSZip)
-    const files = [
-      { name: "favicon.ico", input: icoBlob },
-      { name: "favicon-16x16.png", input: blobBySize[16] },
-      { name: "favicon-32x32.png", input: blobBySize[32] },
-      { name: "apple-touch-icon.png", input: blobBySize[180] },
-      { name: "icon-192.png", input: blobBySize[192] },
-      { name: "icon-512.png", input: blobBySize[512] },
-      { name: "icon-512-maskable.png", input: maskableBlob },
-      { name: "site.webmanifest", input: manifest },
-      { name: "head-snippet.html", input: htmlSnippet },
-      { name: "framework-setup.txt", input: frameworkSnippet },
-      { name: "README.txt", input: readme },
-    ];
+    const fileContents = new Map<string, Blob | string>([
+      ["favicon.ico", icoBlob],
+      ["favicon-16x16.png", blobBySize[16]],
+      ["favicon-32x32.png", blobBySize[32]],
+      ["apple-touch-icon.png", blobBySize[180]],
+      ["icon-192.png", blobBySize[192]],
+      ["icon-512.png", blobBySize[512]],
+      ["icon-512-maskable.png", maskableBlob],
+      ["site.webmanifest", manifest],
+      ["head-snippet.html", htmlSnippet],
+      ["framework-setup.txt", frameworkSnippet],
+      ["README.txt", readme],
+    ]);
+    if (fileContents.size !== outputFiles.length) {
+      throw new Error("Generated file contents do not match the output file list.");
+    }
+
+    const files = outputFiles.map(({ name }) => {
+      const input = fileContents.get(name);
+      if (input === undefined) {
+        throw new Error(`No generated content found for ${name}.`);
+      }
+      return { name, input };
+    });
     generatedFiles = files;
     for (const button of generatedAssetButtons) button.disabled = false;
 
