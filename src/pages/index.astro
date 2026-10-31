@@ -44,13 +44,13 @@ const files = outputFiles.map((file) => ({ ...file, icon: fileIcons[file.icon] }
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>Favicon Kit — Every icon your site needs</title>
-    <meta name="description" content="Create a complete favicon and app icon kit in your browser. Your images stay on your device." />
+    <title>Favicon Kit — Generate icons and find any site's favicon</title>
+    <meta name="description" content="Generate a complete favicon kit in your browser or find any site's icon with a simple API. Your uploaded images stay on your device." />
   </head>
   <body>
     <header class="topbar page-width">
       <a class="brand" href="#home" aria-label="Favicon Kit home"><img class="brand-logo" src="/FaviconKit-logo-black.svg" alt="" /><span>favicon<span class="brand-light">kit</span></span></a>
-      <nav class="main-nav" aria-label="Main navigation"><a class="active" href="#home">Home</a><a href="#features">Features</a><a href="#examples">Preview</a><a href="#setup-guide">Setup guide</a></nav>
+      <nav class="main-nav" aria-label="Main navigation"><a class="active" href="#home">Home</a><a href="#finder">Favicon API</a><a href="#features">Features</a><a href="#examples">Preview</a><a href="#setup-guide">Setup guide</a></nav>
       <div class="top-actions"><span class="privacy"><i></i> Files stay on your device</span><button id="themeToggle" class="theme-toggle" type="button"><span class="theme-icon"><Moon size={15} /></span><span class="theme-label">Dark mode</span></button></div>
       <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation" type="button" aria-expanded="false"><ChevronDown size={18} /></button>
     </header>
@@ -61,6 +61,49 @@ const files = outputFiles.map((file) => ({ ...file, icon: fileIcons[file.icon] }
           <div class="feature-pills"><div><span class="pill-icon blue"><Image size={16} /></span><span><b>Favicon</b><small>16×16 — 64×64</small></span></div><div><span class="pill-icon indigo"><Smartphone size={16} /></span><span><b>App icons</b><small>iOS + Android</small></span></div><div><span class="pill-icon violet"><FileJson size={16} /></span><span><b>Web manifest</b><small>PWA ready</small></span></div><div><span class="pill-icon teal"><Code2 size={16} /></span><span><b>Setup snippet</b><small>Copy & paste</small></span></div></div>
         </div>
         <div class="hero-art" aria-label="One image becomes every icon size"><div class="art-glow"></div><div class="art-note">From one image<br />to all your icons <ArrowDown size={25} /></div><div class="art-icon main-art-icon">fk</div><div class="art-icon tile t1">fk</div><div class="art-icon tile t2">fk</div><div class="art-icon tile t3">fk</div><div class="art-icon tile t4">fk</div><div class="art-icon tile t5">fk</div><div class="art-icon tile t6">fk</div><div class="art-icon tile t7">fk</div><div class="art-icon tile t8">fk</div></div>
+      </section>
+
+      <section class="finder-section" id="finder" aria-labelledby="finderTitle">
+        <div class="finder-intro">
+          <p class="eyebrow">A developer-friendly endpoint</p>
+          <h2 id="finderTitle">A favicon for any domain.<br /><span>One simple URL.</span></h2>
+          <p>Find a site's best available icon and use it in bookmarks, dashboards, link previews, and more. If the site has no icon, get a domain-colored letter avatar instead.</p>
+        </div>
+        <div class="finder-panel">
+          <form id="finderForm" class="finder-form">
+            <label class="finder-domain">Website domain
+              <input id="finderDomain" type="text" name="domain" maxlength="253" placeholder="github.com" autocomplete="url" spellcheck="false" required />
+            </label>
+            <label class="finder-size">Size
+              <select id="finderSize" name="size">
+                <option value="32">32 px</option>
+                <option value="64">64 px</option>
+                <option value="128" selected>128 px</option>
+                <option value="256">256 px</option>
+                <option value="512">512 px</option>
+              </select>
+            </label>
+            <button class="btn primary finder-submit" type="submit">Find favicon</button>
+          </form>
+          <p class="finder-note">Detected site icons are returned at their original dimensions. The selected size applies to generated letter avatars.</p>
+          <div class="finder-output">
+            <div class="finder-result" id="finderResult" hidden>
+              <img id="finderPreview" alt="" />
+              <div class="finder-result-copy"><strong id="finderResultTitle">Favicon preview</strong><span id="finderStatus" role="status" aria-live="polite"></span></div>
+            </div>
+            <div class="finder-embed">
+              <code id="finderSnippet">Enter a domain to get an embed snippet.</code>
+              <button id="copyFinderSnippet" class="copy-button" type="button" disabled>Copy</button>
+            </div>
+          </div>
+          <div class="finder-examples">
+            <span class="finder-examples-label">Try it with</span>
+            <a href="#finder" class="finder-example" data-domain="github.com"><img src="/icon?domain=github.com&amp;size=64" alt="" loading="lazy" /><span>GitHub</span></a>
+            <a href="#finder" class="finder-example" data-domain="netlify.com"><img src="/icon?domain=netlify.com&amp;size=64" alt="" loading="lazy" /><span>Netlify</span></a>
+            <a href="#finder" class="finder-example" data-domain="astro.build"><img src="/icon?domain=astro.build&amp;size=64" alt="" loading="lazy" /><span>Astro</span></a>
+            <a href="#finder" class="finder-example" data-domain="cloudflare.com"><img src="/icon?domain=cloudflare.com&amp;size=64" alt="" loading="lazy" /><span>Cloudflare</span></a>
+          </div>
+        </div>
       </section>
 
       <div class="steps" aria-label="Three steps"><div class="step-item is-current" data-step="1"><span class="step-number">1</span><span><b>Upload image</b><small>Choose your logo</small></span></div><div class="step-item" data-step="2"><span class="step-number">2</span><span><b>Customize</b><small>Set name and colours</small></span></div><div class="step-item" data-step="3"><span class="step-number">3</span><span><b>Download</b><small>Get your ready-to-use ZIP</small></span></div></div>
@@ -128,6 +171,7 @@ const files = outputFiles.map((file) => ({ ...file, icon: fileIcons[file.icon] }
         </nav>
       </div>
     </footer>
+    <script src="../finder.ts"></script>
     <script src="../main.ts"></script>
   </body>
 </html>

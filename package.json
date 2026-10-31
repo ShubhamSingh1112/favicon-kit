@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node scripts/astro.mjs dev",
     "build": "node scripts/astro.mjs build && node scripts/types.mjs",
-    "preview": "node scripts/astro.mjs preview"
+    "preview": "node scripts/astro.mjs preview",
+    "test:api": "node --experimental-strip-types --test tests/icon.test.ts"
   },
   "devDependencies": {
     "@types/bun": "^1.4.4",
