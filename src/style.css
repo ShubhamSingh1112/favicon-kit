@@ -145,7 +145,6 @@ select {
   transition: color 160ms ease;
 }
 
-.main-nav a:hover,
 .footer nav a:hover {
   color: var(--blue);
 }
@@ -155,7 +154,7 @@ select {
   font-weight: 700;
 }
 
-.main-nav a.active::after {
+.main-nav a::after {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -164,6 +163,17 @@ select {
   border-radius: 2px;
   background: var(--blue);
   content: "";
+  transform: scaleX(0);
+  transition: transform 160ms ease;
+}
+
+.main-nav a:hover {
+  color: var(--blue);
+}
+
+.main-nav a:hover::after,
+.main-nav a.active::after {
+  transform: scaleX(1);
 }
 
 .top-actions {

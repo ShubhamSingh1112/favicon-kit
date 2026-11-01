@@ -34,6 +34,10 @@ const brandLogo = document.querySelector<HTMLImageElement>(".brand-logo")!;
 const steps = [...document.querySelectorAll<HTMLElement>(".steps [data-step]")];
 const mobileMenu = document.getElementById("mobileMenu") as HTMLButtonElement;
 const mainNav = document.querySelector<HTMLElement>(".main-nav")!;
+const mainNavLinks = [...mainNav.querySelectorAll<HTMLAnchorElement>("a")];
+const navSections = mainNavLinks
+  .map((link) => ({ link, section: document.querySelector<HTMLElement>(link.hash) }))
+  .filter((item): item is { link: HTMLAnchorElement; section: HTMLElement } => item.section !== null);
 const previewIcons = [...document.querySelectorAll<HTMLElement>("[data-icon-size]")];
 const generatedAssetButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-download]")];
 const startUrlInput = document.getElementById("startUrl") as HTMLInputElement;
@@ -50,6 +54,34 @@ const maskableIcon = document.getElementById("maskableIcon") as HTMLElement;
 const copyManifest = document.getElementById("copyManifest") as HTMLButtonElement;
 const outputFileCount = `${outputFiles.length} files`;
 document.querySelector<HTMLElement>(".contents-count")!.textContent = outputFileCount;
+
+const setActiveNavLink = (activeLink: HTMLAnchorElement) => {
+  for (const link of mainNavLinks) {
+    const isActive = link === activeLink;
+    link.classList.toggle("active", isActive);
+    if (isActive) {
+      link.setAttribute("aria-current", "location");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  }
+};
+
+const updateActiveNavLink = () => {
+  if (navSections.length === 0) return;
+
+  const activationLine = window.innerHeight * 0.35;
+  let activeSection = navSections[0];
+  for (const entry of navSections) {
+    if (entry.section.getBoundingClientRect().top > activationLine) break;
+    activeSection = entry;
+  }
+
+  if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 8) {
+    activeSection = navSections[navSections.length - 1];
+  }
+  setActiveNavLink(activeSection.link);
+};
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -638,6 +670,17 @@ mainNav.querySelectorAll("a").forEach((link) => link.addEventListener("click", (
   mainNav.classList.remove("mobile-open");
   mobileMenu.setAttribute("aria-expanded", "false");
 }));
+let navUpdateScheduled = false;
+window.addEventListener("scroll", () => {
+  if (navUpdateScheduled) return;
+  navUpdateScheduled = true;
+  window.requestAnimationFrame(() => {
+    updateActiveNavLink();
+    navUpdateScheduled = false;
+  });
+}, { passive: true });
+window.addEventListener("resize", updateActiveNavLink);
+updateActiveNavLink();
 document.querySelector(".contents-panel")?.setAttribute("open", "");
 document.getElementById("changeImage")!.addEventListener("click", () => fileInput.click());
 
