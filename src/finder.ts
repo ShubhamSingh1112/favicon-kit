@@ -8,23 +8,89 @@ const finderStatus = document.getElementById("finderStatus") as HTMLElement;
 const finderSnippet = document.getElementById("finderSnippet") as HTMLElement;
 const copyFinderSnippet = document.getElementById("copyFinderSnippet") as HTMLButtonElement;
 
-function updateFinder(domain: string) {
+let requestId = 0;
+let requestController: AbortController | undefined;
+let previewObjectUrl: string | undefined;
+let loadedStatus = "";
+
+function setFinderStatus(message: string, kind: "" | "success" | "warning" | "error" = "") {
+  finderStatus.textContent = message;
+  finderStatus.className = kind ? `finder-status ${kind}` : "finder-status";
+}
+
+function describeFailure(status: number, message: string): string {
+  if (status === 400) return message || "Enter a valid website domain and try again.";
+  if (status === 502) {
+    return "Our favicon service couldn't complete the lookup. Please try again shortly.";
+  }
+  return "We couldn't fetch a favicon right now. Please try again shortly.";
+}
+
+async function updateFinder(domain: string) {
+  const id = ++requestId;
+  requestController?.abort();
+  requestController = new AbortController();
+
   const size = finderSize.value;
   const apiUrl = new URL("/icon", window.location.origin);
   apiUrl.searchParams.set("domain", domain);
   apiUrl.searchParams.set("size", size);
 
   finderResult.hidden = false;
-  finderPreview.alt = `Favicon for ${domain}`;
+  finderPreview.alt = `Favicon preview for ${domain}`;
   finderPreview.dataset.domain = domain;
-  finderStatus.textContent = "Loading icon…";
   finderResultTitle.textContent = domain;
-  finderPreview.src = apiUrl.toString();
+  setFinderStatus("Looking for this site's favicon…");
 
   const escapedDomain = domain.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
   finderSnippet.textContent =
     `<img src="${apiUrl.toString()}" alt="${escapedDomain} icon" width="${size}" height="${size}">`;
   copyFinderSnippet.disabled = false;
+
+  try {
+    const response = await fetch(apiUrl, { signal: requestController.signal });
+    if (id !== requestId) return;
+
+    if (!response.ok) {
+      let message = "";
+      try {
+        const body = (await response.json()) as { error?: string };
+        message = body.error ?? "";
+      } catch {
+        // The endpoint may have returned a non-JSON error page.
+      }
+      throw new Error(describeFailure(response.status, message));
+    }
+
+    const contentType = response.headers.get("content-type")?.toLowerCase() ?? "";
+    if (!contentType.startsWith("image/")) {
+      throw new Error("The favicon service returned an unexpected response. Please try again later.");
+    }
+
+    const source = response.headers.get("x-favicon-source") ?? "";
+    const isFallback = source === "fallback";
+    loadedStatus = isFallback
+      ? `We couldn't fetch a favicon from ${domain}. The site may restrict automated requests, or no supported icon may be available. Showing a generated placeholder instead.`
+      : `Favicon found for ${domain}.`;
+
+    const blob = await response.blob();
+    if (id !== requestId) return;
+    if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+    previewObjectUrl = URL.createObjectURL(blob);
+    finderPreview.src = previewObjectUrl;
+    setFinderStatus(loadedStatus, isFallback ? "warning" : "success");
+  } catch (error) {
+    if (id !== requestId || (error instanceof DOMException && error.name === "AbortError")) return;
+    if (previewObjectUrl) {
+      URL.revokeObjectURL(previewObjectUrl);
+      previewObjectUrl = undefined;
+    }
+    finderPreview.removeAttribute("src");
+    const message = error instanceof Error
+      ? error.message
+      : "We couldn't fetch a favicon. Check your connection and try again.";
+    setFinderStatus(message, "error");
+  }
 }
 
 finderForm.addEventListener("submit", (event) => {
@@ -34,20 +100,25 @@ finderForm.addEventListener("submit", (event) => {
     finderDomain.focus();
     return;
   }
-  updateFinder(domain);
+  void updateFinder(domain);
 });
 
 finderPreview.addEventListener("load", () => {
-  finderStatus.textContent = "Ready to embed";
+  if (loadedStatus) {
+    setFinderStatus(
+      loadedStatus,
+      loadedStatus.startsWith("We couldn't fetch") ? "warning" : "success"
+    );
+  }
 });
 
 finderPreview.addEventListener("error", () => {
-  finderStatus.textContent = "The API is unavailable on this preview. Deploy to Netlify to try it.";
+  setFinderStatus("The preview image couldn't be displayed. Please try the lookup again.", "error");
 });
 
 finderSize.addEventListener("change", () => {
   const domain = finderPreview.dataset.domain;
-  if (domain) updateFinder(domain);
+  if (domain) void updateFinder(domain);
 });
 
 document.querySelectorAll<HTMLAnchorElement>(".finder-example").forEach((example) => {
@@ -56,7 +127,7 @@ document.querySelectorAll<HTMLAnchorElement>(".finder-example").forEach((example
     const domain = example.dataset.domain;
     if (!domain) return;
     finderDomain.value = domain;
-    updateFinder(domain);
+    void updateFinder(domain);
     finderDomain.focus();
   });
 });
@@ -65,12 +136,16 @@ copyFinderSnippet.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(finderSnippet.textContent ?? "");
     copyFinderSnippet.textContent = "Copied";
-    finderStatus.textContent = "Embed snippet copied.";
     setTimeout(() => {
       copyFinderSnippet.textContent = "Copy";
     }, 1600);
   } catch (error) {
     console.error("Could not copy the favicon embed snippet.", error);
-    finderStatus.textContent = "Copy failed. Select and copy the snippet instead.";
+    setFinderStatus("Copy failed. Select and copy the snippet instead.", "error");
   }
+});
+
+window.addEventListener("beforeunload", () => {
+  requestController?.abort();
+  if (previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
 });

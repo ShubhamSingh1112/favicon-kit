@@ -2,6 +2,7 @@ import Pica from "pica";
 import { downloadZip } from "client-zip";
 import { encodeIco } from "icojs";
 import { outputFiles, type OutputFileName } from "./data/output-files";
+import "./finder";
 
 /* ------------------------------------------------------------------ */
 /*  DOM references                                                     */

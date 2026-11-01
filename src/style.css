@@ -2396,6 +2396,18 @@ html[data-theme="dark"] .setup-guide code {
   font-size: var(--font-micro);
 }
 
+.finder-result-copy .finder-status.success {
+  color: var(--success, #16804a);
+}
+
+.finder-result-copy .finder-status.warning {
+  color: var(--warning, #9a5b00);
+}
+
+.finder-result-copy .finder-status.error {
+  color: var(--danger, #c0392b);
+}
+
 .finder-embed {
   display: flex;
   min-width: 0;
